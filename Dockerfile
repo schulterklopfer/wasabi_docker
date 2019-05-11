@@ -1,14 +1,20 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-alpine3.8 AS builder
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git clang
 
 RUN git clone https://github.com/zkSNACKs/WalletWasabi.git --recursive /WalletWasabi
 WORKDIR /WalletWasabi/WalletWasabi.Gui
-RUN dotnet build
+RUN git checkout tags/v1.1.4
 
-RUN dotnet publish --output /app/ --configuration Release
+RUN dotnet restore
+RUN dotnet build -c Release -o /app/ -r linux-x64
+RUN dotnet publish --output /app/ -c Release --disable-parallel --no-cache /p:DebugType=none /p:DebugSymbols=false /p:ErrorReport=none
 
+# remove unused files
+RUN rm /app/TorDaemons/tor-osx64.zip /app/TorDaemons/tor-win32.zip
+RUN rm -rf /app/runtimes/osx /app/runtimes/tizen-armel /app/runtimes/tizen-x86 /app/runtimes/win /app/runtimes/win-x64 /app/runtimes/win--x86
+RUN rm -rf /app/Hwi/Software/hwi-osx64.zip /app/Hwi/Software/hwi-win64
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-alpine3.8
 
@@ -27,7 +33,6 @@ RUN wget -O /etc/apk/keys//cyphernode@satoshiportal.com.rsa.pub https://github.c
  && /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib \
  && echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf \
  && rm -rf glibc.apk glibc-bin.apk
-
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT false
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
