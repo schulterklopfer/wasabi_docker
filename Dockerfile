@@ -16,7 +16,7 @@ RUN rm /app/TorDaemons/tor-osx64.zip /app/TorDaemons/tor-win32.zip
 RUN rm -rf /app/runtimes/osx /app/runtimes/tizen-armel /app/runtimes/tizen-x86 /app/runtimes/win /app/runtimes/win-x64 /app/runtimes/win--x86
 RUN rm -rf /app/Hwi/Software/hwi-osx64.zip /app/Hwi/Software/hwi-win64
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-alpine3.8
+FROM mcr.microsoft.com/dotnet/core/runtime:2.2-alpine3.8
 
 RUN mkdir -p /root/.walletwasabi/client/Wallets
 
