@@ -30,13 +30,13 @@ RUN wget -O /etc/apk/keys//cyphernode@satoshiportal.com.rsa.pub https://github.c
  && wget -O glibc-bin.apk "https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}-x86_64.apk" \
  && echo "$GLIBCBIN_SHA256  glibc-bin.apk" | sha256sum -c - \
  && apk add --update --no-cache glibc-bin.apk glibc.apk \
+ && apk add --no-cache expect \
  && /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib \
  && echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf \
  && rm -rf glibc.apk glibc-bin.apk
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT false
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
-RUN apk add --no-cache expect libevent
 
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
