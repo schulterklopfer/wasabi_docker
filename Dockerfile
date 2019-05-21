@@ -24,7 +24,7 @@ ENV GLIBC_SHA256 be14d25cf96c1c4fc44b6bd3dcec3227db4e227f89a2148e859b1e95eea81ad
 ENV GLIBCBIN_SHA256 930f534acae9012911b13f734a292a051321ba1b5a0b16a06cbec0bd1c69ef85
 
 RUN mkdir -p /root/.walletwasabi/client/Wallets \
- && wget -O /etc/apk/keys//cyphernode@satoshiportal.com.rsa.pub https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/2.29-r0/cyphernode@satoshiportal.com.rsa.pub \
+ && wget -O /etc/apk/keys/cyphernode@satoshiportal.com.rsa.pub https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/2.29-r0/cyphernode@satoshiportal.com.rsa.pub \
  && wget -O glibc.apk "https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}-x86_64.apk" \
  && echo "$GLIBC_SHA256  glibc.apk" | sha256sum -c - \
  && wget -O glibc-bin.apk "https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}-x86_64.apk" \
