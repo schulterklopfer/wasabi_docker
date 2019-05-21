@@ -1,11 +1,12 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-alpine3.8 AS builder
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
-RUN apk add --no-cache git clang
+RUN apk add --no-cache git
 
-RUN git clone https://github.com/zkSNACKs/WalletWasabi.git --recursive /WalletWasabi
+#RUN git clone --recursive https://github.com/zkSNACKs/WalletWasabi.git /WalletWasabi
+RUN git clone --branch Features/Rpc-Server --recursive https://github.com/lontivero/WalletWasabi.git /WalletWasabi
 WORKDIR /WalletWasabi/WalletWasabi.Gui
-RUN git checkout tags/v1.1.4
+#RUN git checkout tags/v1.1.4
 
 RUN dotnet restore
 RUN dotnet build -c Release -o /app/ -r linux-x64
@@ -18,13 +19,12 @@ RUN rm -rf /app/Hwi/Software/hwi-osx64.zip /app/Hwi/Software/hwi-win64
 
 FROM mcr.microsoft.com/dotnet/core/runtime:2.2-alpine3.8
 
-RUN mkdir -p /root/.walletwasabi/client/Wallets
-
 ENV GLIBC_VERSION 2.29-r0
 ENV GLIBC_SHA256 be14d25cf96c1c4fc44b6bd3dcec3227db4e227f89a2148e859b1e95eea81ad2
 ENV GLIBCBIN_SHA256 930f534acae9012911b13f734a292a051321ba1b5a0b16a06cbec0bd1c69ef85
 
-RUN wget -O /etc/apk/keys//cyphernode@satoshiportal.com.rsa.pub https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/2.29-r0/cyphernode@satoshiportal.com.rsa.pub \
+RUN mkdir -p /root/.walletwasabi/client/Wallets \
+ && wget -O /etc/apk/keys//cyphernode@satoshiportal.com.rsa.pub https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/2.29-r0/cyphernode@satoshiportal.com.rsa.pub \
  && wget -O glibc.apk "https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}-x86_64.apk" \
  && echo "$GLIBC_SHA256  glibc.apk" | sha256sum -c - \
  && wget -O glibc-bin.apk "https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}-x86_64.apk" \
