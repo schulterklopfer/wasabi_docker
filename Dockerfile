@@ -13,42 +13,27 @@ RUN dotnet build -c Release -o /app/ -r linux-x64
 RUN dotnet publish --output /app/ -c Release --disable-parallel --no-cache /p:DebugType=none /p:DebugSymbols=false /p:ErrorReport=none
 
 # remove unused files
-RUN rm /app/TorDaemons/tor-osx64.zip /app/TorDaemons/tor-win32.zip
+#RUN rm /app/TorDaemons/tor-osx64.zip /app/TorDaemons/tor-win32.zip
+RUN rm -rf /app/TorDaemons
 RUN rm -rf /app/runtimes/osx /app/runtimes/tizen-armel /app/runtimes/tizen-x86 /app/runtimes/win /app/runtimes/win-x64 /app/runtimes/win--x86
 RUN rm -rf /app/Hwi/Software/hwi-osx64.zip /app/Hwi/Software/hwi-win64
 
 FROM mcr.microsoft.com/dotnet/core/runtime:2.2-alpine3.8
-
-ARG ARCH=x86_64
-
-ENV GLIBC_VERSION 2.29-r0
-ENV GLIBC_FILE glibc-${GLIBC_VERSION}-${ARCH}.apk
-ENV GLIBC_BIN_FILE glibc-bin-${GLIBC_VERSION}-${ARCH}.apk
-
-RUN mkdir -p /root/.walletwasabi/client/Wallets \
- && wget -O /etc/apk/keys/cyphernode@satoshiportal.com.rsa.pub https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/cyphernode@satoshiportal.com.rsa.pub \
- && wget "https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/SHA256SUMS.asc" \
- && wget "https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/${GLIBC_FILE}" \
- && grep ${GLIBC_FILE} SHA256SUMS.asc | sha256sum -c - \
- && wget "https://github.com/SatoshiPortal/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/${GLIBC_BIN_FILE}" \
- && grep ${GLIBC_BIN_FILE} SHA256SUMS.asc | sha256sum -c - \
- && apk add --update --no-cache ${GLIBC_BIN_FILE} ${GLIBC_FILE} \
- && apk add --no-cache expect \
- && /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib \
- && echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf \
- && rm -rf glibc.apk glibc-bin.apk
-
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT false
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
-
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
 
 COPY --from=builder /app /app
 WORKDIR /app
 
 COPY docker-entrypoint.sh docker-entrypoint.sh
 COPY start.sh start.sh
+COPY torrc /etc/tor/torrc
+
+RUN apk add --no-cache expect tor
+
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT false
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
 
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
