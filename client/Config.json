@@ -19,5 +19,9 @@
   "PrivacyLevelFine": 21,
   "PrivacyLevelStrong": 50,
   "JsonRpcServerEnabled": true,
-  "JsonRpcServerPort": 18099
+  "JsonRpcUser": "",
+  "JsonRpcPassword": "",
+  "JsonRpcServerPrefixes": [
+    "http://*:18099/"
+  ]
 }
