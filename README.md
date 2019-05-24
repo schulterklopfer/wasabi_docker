@@ -16,6 +16,9 @@ Planned archs (check if possible at all):
 * aarch64
 
 ```bash
+# build image
+./build.sh
+
 # create wallet
 # the wallet password is provided through stdin
 # will create a wasabi wallet json wallet file inside the 
