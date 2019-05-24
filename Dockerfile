@@ -1,14 +1,3 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-alpine3.8 AS builder-generator
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
-
-COPY WalletGenerator /WalletGenerator
-WORKDIR /WalletGenerator
-
-RUN dotnet restore
-RUN dotnet build -c Release -o /app/ -r linux-x64
-RUN dotnet publish --output /app/ -c Release --disable-parallel --no-cache /p:DebugType=none /p:DebugSymbols=false /p:ErrorReport=none
-
-
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-alpine3.8 AS builder
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
@@ -16,8 +5,16 @@ RUN apk add --no-cache git
 
 #RUN git clone --recursive https://github.com/zkSNACKs/WalletWasabi.git /WalletWasabi
 RUN git clone --branch Features/Rpc-Server --recursive https://github.com/lontivero/WalletWasabi.git /WalletWasabi
-WORKDIR /WalletWasabi/WalletWasabi.Gui
 #RUN git checkout tags/v1.1.4
+COPY WalletGenerator /WalletGenerator
+
+WORKDIR /WalletGenerator
+
+RUN dotnet restore
+RUN dotnet build -c Release -o /app/ -r linux-x64
+RUN dotnet publish --output /app/ -c Release --disable-parallel --no-cache /p:DebugType=none /p:DebugSymbols=false /p:ErrorReport=none
+
+WORKDIR /WalletWasabi/WalletWasabi.Gui
 
 RUN dotnet restore
 RUN dotnet build -c Release -o /app/ -r linux-x64
@@ -35,7 +32,6 @@ ENV APPDATA=/root/.walletwasabi/client
 
 RUN apk add --no-cache expect tor icu
 
-COPY --from=builder-generator /app /app
 COPY --from=builder /app /app
 
 WORKDIR /app
