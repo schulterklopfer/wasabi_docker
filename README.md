@@ -1,7 +1,12 @@
 # wasabi_docker
 Proof of concept on how to run Wasabi inside a docker container in daemon mode.
 
-ATTENTION: this repo will use an experimental version of Wasabi wallet from https://github.com/lontivero/WalletWasabi/tree/Features/Rpc-Server
+ <span style="color:red">ATTENTION!!!</span> 
+ 
+ This repo will use an experimental version of Wasabi wallet from https://github.com/lontivero/WalletWasabi/tree/Features/Rpc-Server.
+ It is not intended to be used in any production environment on mainnet.
+ 
+ <span style="color:red">ATTENTION!!!</span>
 
 Supported archs:
 * x86_64
