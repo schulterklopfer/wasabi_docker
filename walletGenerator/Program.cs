@@ -8,7 +8,7 @@ namespace WalletGenerator
     {
         static async Task Main(string[] args)
         {
-			    await CommandInterpreter.ExecuteCommandsAsync(args);
+	    await CommandInterpreter.ExecuteCommandsAsync(args);
         }
     }
 }
