@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 command=$1
+walletName=$2
 password=$(cat -) # will block until input from stdin
 
 if [ "$command" = "" ]; then
@@ -8,12 +9,17 @@ if [ "$command" = "" ]; then
 fi
 
 if [ "$command" = "mix" ]; then
-  # TODO: first testpassword and exit if wrong
-  # or else the next command will hang on a wrong
-  # password
-  exec /app/startWasabiWalletWithPassword.sh $2 ${password,""}
-elif [ "$command" = "createWallet" ]; then
-  exec /app/generateWallet.sh $2 ${password,""}
+  /app/checkWalletPassword.sh $walletName $password
+
+  if [ $? = 0 ]; then
+    exec /app/startWasabiWalletWithPassword.sh $walletName $password
+  else
+    echo "Wrong password"
+  fi
+elif [ "$command" = "check" ]; then
+  exec /app/checkWalletPassword.sh $walletName $password
+elif [ "$command" = "create" ]; then
+  exec /app/generateWallet.sh $walletName $password
 else
   echo "Unknown command"
 fi

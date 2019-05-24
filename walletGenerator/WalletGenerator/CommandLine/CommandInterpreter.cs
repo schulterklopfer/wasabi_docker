@@ -25,6 +25,7 @@ namespace WalletGenerator.CommandLine
 					"",
 					"Available commands are:",
 					"",
+					new CheckPasswordCommand(),
 					new GenerateWalletCommand(),
 					new PasswordFinderCommand()
 				};

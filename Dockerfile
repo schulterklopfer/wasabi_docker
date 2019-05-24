@@ -41,6 +41,7 @@ COPY --from=builder /app /app
 WORKDIR /app
 
 COPY docker-entrypoint.sh docker-entrypoint.sh
+COPY checkWalletPassword.sh checkWalletPassword.sh
 COPY startWasabiWallet.sh startWasabiWallet.sh
 COPY generateWallet.sh generateWallet.sh
 COPY startWasabiWalletWithPassword.sh startWasabiWalletWithPassword.sh
