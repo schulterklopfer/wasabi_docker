@@ -1,0 +1,14 @@
+﻿{
+  "EncryptedSecret": "6PYTRoiDkZVYhFKPamJQ7Ky4ko3jhXrVjhrUQbSfMnbzxvqitXN9Z2kKey",
+  "ChainCode": "Kgk9hJknUtnct19hSQYuSeHOLhAPhcnQx9I1uyEVjvI=",
+  "MasterFingerprint": "1c003de9",
+  "ExtPubKey": "xpub6CeZcBWSdAwNkySgHQrnDtfdbvpb9M4pKWWXKqZ4Ni2muWuPG9y2QjChzZYrkH6DRHGhCUicFxt1EqDBA1joxsBumxyhHUncwrCYjRvZuxe",
+  "PasswordVerified": false,
+  "MinGapLimit": 21,
+  "BlockchainState": {
+    "Network": "Main",
+    "BestHeight": "0",
+    "BlockStates": []
+  },
+  "HdPubKeysLock": {}
+}

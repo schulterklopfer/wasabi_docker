@@ -1,0 +1,5 @@
+WalletGenerator/bin
+WalletGenerator/obj
+WalletGenerator/.vscode
+Dockerfile
+.dockerignore
