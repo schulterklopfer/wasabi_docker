@@ -35,4 +35,19 @@ echo "test123" | ./wassabee check myWallet
 # will mix coins in myWallet according to the settings
 # in Config.json inside the client folder
 echo "test123" | ./wassabee mix myWallet
+
+# When mix mode is entered you should be able to use
+# wasabi's RPC interface to get info about unspent coins,
+# your wallet or send funds around.
+
+# try:
+# (jq is not needed, but makes the json result more readable)
+
+curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"getstatus"}' http://127.0.0.1:18099/ | jq
+curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"getwalletinfo"}' http://127.0.0.1:18099/ | jq
+curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"listunspentcoins"}' http://127.0.0.1:18099/ | jq
+curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"getnewaddress","params":["payment order #178670"]}' http://127.0.0.1:18099/ | jq
+
+# curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"send", "params": { "sendto": "<address>", "coins":[{"transactionid":"<txid>", "index":<index>}], "amount": <amount>, "label": "<label>", "feeTarget":<feetarget> }}' http://127.0.0.1:18099/
+
 ```
