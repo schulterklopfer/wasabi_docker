@@ -17,7 +17,7 @@ namespace WalletGenerator.CommandLine
     public bool ShowHelp { get; set; }
 
     public PasswordFinderCommand()
-      : base("findpassword", "Try to find typos in provided password.")
+    : base("findpassword", "Try to find typos in provided password.")
     {
       Language = "en";
 
@@ -28,17 +28,24 @@ namespace WalletGenerator.CommandLine
         "eg: ./wassabee findpassword --wallet:MyWalletName --numbers:false --symbold:true",
         "",
         { "w|wallet=", "The name of the wallet file.",
-          x =>  WalletName = x },
+          x =>  WalletName = x
+        },
         { "s|secret=", "You can specify an encrypted secret key instead of wallet. Example of encrypted secret: 6PYTMDmkxQrSv8TK4761tuKrV8yFwPyZDqjJafcGEiLBHiqBV6WviFxJV4",
-          x =>  EncryptedSecret = Guard.Correct(x) },
+          x =>  EncryptedSecret = Guard.Correct(x)
+        },
         { "l|language=", "The charset to use: en, es, it, fr, pt. Default=en.",
-          v => Language = v },
+          v => Language = v
+        },
         { "n|numbers=", "Try passwords with numbers. Default=true.",
-          v => UseNumbers = (v=="" || v=="1" || v.ToUpper()=="TRUE") },
+          v => UseNumbers = (v == "" || v == "1" || v.ToUpper() == "TRUE")
+        },
         { "x|symbols=", "Try passwords with symbolds. Default=true.",
-          v => UseSymbols = (v=="" || v=="1" || v.ToUpper()=="TRUE") },
+          v => UseSymbols = (v == "" || v == "1" || v.ToUpper() == "TRUE")
+        },
         { "h|help", "Show Help",
-          v => ShowHelp = true}};
+          v => ShowHelp = true
+        }
+      };
     }
 
     public override Task<int> InvokeAsync(IEnumerable<string> args)

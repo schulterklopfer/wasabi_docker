@@ -16,7 +16,7 @@ namespace WalletGenerator.CommandLine
     public bool ShowHelp { get; set; }
 
     public GenerateWalletCommand()
-      : base("generate", "Generate a new wallet file.")
+    : base("generate", "Generate a new wallet file.")
     {
       Options = new OptionSet() {
         "usage: generate --wallet:WalletName",
@@ -25,9 +25,12 @@ namespace WalletGenerator.CommandLine
         "eg: echo -n \"password\" | ./walletgenerator generate --wallet:MyWalletName > mnemonics.txta",
         "",
         { "w|wallet=", "The name of the wallet file.",
-          x =>  WalletName = x },
+          x =>  WalletName = x
+        },
         { "h|help", "Show Help",
-          v => ShowHelp = true}};
+          v => ShowHelp = true
+        }
+      };
     }
 
     public override Task<int> InvokeAsync(IEnumerable<string> args)
@@ -60,13 +63,13 @@ namespace WalletGenerator.CommandLine
 
             password = Guard.Correct(password);
 
-            string filePath = Path.Combine( WalletGenerator.WalletsDir, WalletName+".json" );
+            string filePath = Path.Combine( WalletGenerator.WalletsDir, WalletName + ".json" );
             var manager = KeyManager.CreateNew( out Mnemonic mnemonic, password, filePath );
 
             manager.ToFile();
             Console.WriteLine(string.Join( ", ", mnemonic.Words));
 
-          } catch( Exception ) {
+          } catch ( Exception ) {
             Console.WriteLine($"There was a problem creating the wallet file.");
             error = true;
           }

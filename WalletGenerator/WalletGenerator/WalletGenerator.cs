@@ -16,12 +16,12 @@ using WalletWasabi.Models;
 using WalletWasabi.Logging;
 namespace WalletGenerator
 {
-    class WalletGenerator
-    {
+  class WalletGenerator
+  {
 
-        public static string DataDir = GetDataDir();
-        public static string WalletsDir = GetDataDir( "Wallets" );
-        public static string WalletBackupsDir = GetDataDir( "WalletBackups" );
+    public static string DataDir = GetDataDir();
+    public static string WalletsDir = GetDataDir( "Wallets" );
+    public static string WalletBackupsDir = GetDataDir( "WalletBackups" );
 
     public static string GetDataDir(string appName = "")
     {
@@ -47,7 +47,7 @@ namespace WalletGenerator
       return directory;
     }
 
-        public static KeyManager TryGetKeymanagerFromWalletName(string walletName)
+    public static KeyManager TryGetKeymanagerFromWalletName(string walletName)
     {
       try
       {
@@ -89,7 +89,7 @@ namespace WalletGenerator
       }
     }
 
-        static string GetWalletFullPath(string walletName)
+    static string GetWalletFullPath(string walletName)
     {
       walletName = walletName.TrimEnd(".json", StringComparison.OrdinalIgnoreCase);
       return Path.Combine(WalletsDir, walletName + ".json");
@@ -101,7 +101,7 @@ namespace WalletGenerator
       return Path.Combine(WalletBackupsDir, walletName + ".json");
     }
 
-        static KeyManager LoadKeyManager(string walletFullPath, string walletBackupFullPath)
+    static KeyManager LoadKeyManager(string walletFullPath, string walletBackupFullPath)
     {
       try
       {
@@ -115,10 +115,10 @@ namespace WalletGenerator
         }
 
         Logger.LogWarning($"Wallet got corrupted.\n" +
-          $"Wallet Filepath: {walletFullPath}\n" +
-          $"Trying to recover it from backup.\n" +
-          $"Backup path: {walletBackupFullPath}\n" +
-          $"Exception: {ex.ToString()}");
+                          $"Wallet Filepath: {walletFullPath}\n" +
+                          $"Trying to recover it from backup.\n" +
+                          $"Backup path: {walletBackupFullPath}\n" +
+                          $"Exception: {ex.ToString()}");
         if (File.Exists(walletFullPath))
         {
           string corruptedWalletBackupPath = Path.Combine(WalletBackupsDir, $"{Path.GetFileName(walletFullPath)}_CorruptedBackup");
@@ -136,7 +136,7 @@ namespace WalletGenerator
       }
     }
 
-        public static KeyManager LoadKeyManager(string walletFullPath)
+    public static KeyManager LoadKeyManager(string walletFullPath)
     {
       KeyManager keyManager;
 
@@ -151,5 +151,5 @@ namespace WalletGenerator
       return keyManager;
     }
 
-    }
+  }
 }

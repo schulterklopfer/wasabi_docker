@@ -16,7 +16,7 @@ namespace WalletGenerator.CommandLine
     public bool ShowHelp { get; set; }
 
     public CheckPasswordCommand()
-      : base("check", "Check password of a wallet file.")
+    : base("check", "Check password of a wallet file.")
     {
       Options = new OptionSet() {
         "usage: check --wallet:WalletName",
@@ -25,9 +25,12 @@ namespace WalletGenerator.CommandLine
         "eg: echo -n \"password\" | ./walletgenerator check --wallet:MyWalletName",
         "",
         { "w|wallet=", "The name of the wallet file.",
-          x =>  WalletName = x },
+          x =>  WalletName = x
+        },
         { "h|help", "Show Help",
-          v => ShowHelp = true}};
+          v => ShowHelp = true
+        }
+      };
     }
 
     public override Task<int> InvokeAsync(IEnumerable<string> args)
@@ -45,34 +48,34 @@ namespace WalletGenerator.CommandLine
           Console.Error.WriteLine("Missing required argument `--wallet=WalletName`.");
           Console.Error.WriteLine("Use `check --help` for details.");
         }
-                else
+        else
         {
           // Generate here
-                    try {
+          try {
 
-                        string s = "";
-                        string password = "";
-                        while ((s = Console.ReadLine()) != null)
-                        {
-                            password += s;
-                        }
+            string s = "";
+            string password = "";
+            while ((s = Console.ReadLine()) != null)
+            {
+              password += s;
+            }
 
-                        password = Guard.Correct(password);
+            password = Guard.Correct(password);
 
-                        string filePath = Path.Combine( WalletGenerator.WalletsDir, WalletName+".json" );
-                        var manager = WalletGenerator.TryGetKeymanagerFromWalletName( WalletName );
+            string filePath = Path.Combine( WalletGenerator.WalletsDir, WalletName + ".json" );
+            var manager = WalletGenerator.TryGetKeymanagerFromWalletName( WalletName );
 
-            if( manager == null ) {
+            if ( manager == null ) {
               Console.Error.WriteLine( "No such wallet" );
             }
 
 
-            if( manager.TestPassword( password ) ) {
+            if ( manager.TestPassword( password ) ) {
               passwordCorrect = true;
             }
 
-          } catch( Exception ) {
-              Console.Error.WriteLine($"There was a problem checking the password.");
+          } catch ( Exception ) {
+            Console.Error.WriteLine($"There was a problem checking the password.");
           }
 
         }
@@ -82,7 +85,7 @@ namespace WalletGenerator.CommandLine
         Console.Error.WriteLine($"There was a problem interpreting the command, please review it.");
       }
       Environment.Exit(passwordCorrect ? 0 : 1);
-      Console.WriteLine(passwordCorrect ? "correct": "wrong");
+      Console.WriteLine(passwordCorrect ? "correct" : "wrong");
       return Task.FromResult(0);
     }
   }
