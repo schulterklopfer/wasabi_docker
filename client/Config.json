@@ -18,6 +18,7 @@
   "PrivacyLevelSome": 2,
   "PrivacyLevelFine": 21,
   "PrivacyLevelStrong": 50,
+  "DustThreshold": "0.0001",
   "JsonRpcServerEnabled": true,
   "JsonRpcUser": "",
   "JsonRpcPassword": "",
