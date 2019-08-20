@@ -4,3 +4,8 @@ WalletGenerator/Client
 WalletGenerator/.vscode
 Dockerfile
 .dockerignore
+backend
+client
+regTest
+README.md
+build.sh
