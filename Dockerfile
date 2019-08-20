@@ -29,7 +29,7 @@ FROM mcr.microsoft.com/dotnet/core/runtime:2.2-alpine3.8
 
 ENV APPDATA=/root/.walletwasabi/client
 
-RUN mkdir -p ${APPDATA}/Wallets/ && apk add --no-cache expect tor icu
+RUN mkdir -p ${APPDATA}/Wallets/ && apk add --no-cache expect tor icu curl
 
 COPY --from=builder /app /app
 

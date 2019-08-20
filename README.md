@@ -15,39 +15,31 @@ Planned archs (check if possible at all):
 * armhf
 * aarch64
 
+Edit .env to fit your configuration
+
 ```bash
 # build image
 ./build.sh
+# Create docker-compose.yaml file with 10 wasabi mixers
+./init.sh 10
 
-# create wallet
-# the wallet password is provided through stdin
-# will create a wasabi wallet json wallet file inside the 
-# client/Wallets folder
-echo "test123" | ./wassabee create myWallet
+# start everything
+docker-compose up -d
 
-# check wallet password
-# the wallet password is provided through stdin
-# will exit with 0 when password is ok, ottherwise with 1
-echo "test123" | ./wassabee check myWallet
+# test rpc
 
-# create wallet
-# the wallet password is provided through stdin
-# will mix coins in myWallet according to the settings
-# in Config.json inside the client folder
-echo "test123" | ./wassabee mix myWallet
-
-# When mix mode is entered you should be able to use
-# wasabi's RPC interface to get info about unspent coins,
-# your wallet or send funds around.
+./test_rpc.sh
 
 # try:
 # (jq is not needed, but makes the json result more readable)
 
-curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"getstatus"}' http://127.0.0.1:18099/ | jq
-curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"getwalletinfo"}' http://127.0.0.1:18099/ | jq
-curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"listunspentcoins"}' http://127.0.0.1:18099/ | jq
-curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"getnewaddress","params":["payment order #178670"]}' http://127.0.0.1:18099/ | jq
+# execInWasabi.sh <instanceId> <command>
 
-# curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"send", "params": { "sendto": "<address>", "coins":[{"transactionid":"<txid>", "index":<index>}], "amount": <amount>, "label": "<label>", "feeTarget":<feetarget> }}' http://127.0.0.1:18099/
+./execInWasabi.sh 1 curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"getstatus"}' http://127.0.0.1:18099/ | jq
+./execInWasabi.sh 1 curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"getwalletinfo"}' http://127.0.0.1:18099/ | jq
+./execInWasabi.sh 1 curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"listunspentcoins"}' http://127.0.0.1:18099/ | jq
+./execInWasabi.sh 1 curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"getnewaddress","params":["payment order #178670"]}' http://127.0.0.1:18099/ | jq
+
+# ./execInWasabi.sh 1 curl -s --data-binary '{"jsonrpc":"2.0","id":"1","method":"send", "params": { "sendto": "<address>", "coins":[{"transactionid":"<txid>", "index":<index>}], "amount": <amount>, "label": "<label>", "feeTarget":<feetarget> }}' http://127.0.0.1:18099/
 
 ```
